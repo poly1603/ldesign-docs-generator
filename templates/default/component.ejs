@@ -1,0 +1,184 @@
+<% var body='' %>
+  <div class="component-doc">
+    <h1>
+      <%= doc.name %>
+    </h1>
+
+    <% if (doc.content.description) { %>
+      <div class="description">
+        <p>
+          <%= doc.content.description %>
+        </p>
+      </div>
+      <% } %>
+
+        <!-- Props -->
+        <% if (doc.content.props && doc.content.props.length> 0) { %>
+          <section id="props">
+            <h2>属性 (Props)</h2>
+            <table class="props-table">
+              <thead>
+                <tr>
+                  <th>名称</th>
+                  <th>类型</th>
+                  <th>必填</th>
+                  <th>默认值</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% doc.content.props.forEach(function(prop) { %>
+                  <tr>
+                    <td><code><%= prop.name %></code></td>
+                    <td><code><%= typeof prop.type === 'string' ? prop.type : prop.type.name %></code></td>
+                    <td>
+                      <%= prop.required ? '是' : '否' %>
+                    </td>
+                    <td>
+                      <%= prop.defaultValue !==undefined ? '<code>' + JSON.stringify(prop.defaultValue) + '</code>'
+                        : '-' %>
+                    </td>
+                    <td>
+                      <%= prop.description || '-' %>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+          </section>
+          <% } %>
+
+            <!-- Events -->
+            <% if (doc.content.events && doc.content.events.length> 0) { %>
+              <section id="events">
+                <h2>事件 (Events)</h2>
+                <table class="events-table">
+                  <thead>
+                    <tr>
+                      <th>名称</th>
+                      <th>说明</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% doc.content.events.forEach(function(event) { %>
+                      <tr>
+                        <td><code><%= event.name %></code></td>
+                        <td>
+                          <%= event.description || '-' %>
+                        </td>
+                      </tr>
+                      <% }) %>
+                  </tbody>
+                </table>
+              </section>
+              <% } %>
+
+                <!-- Slots -->
+                <% if (doc.content.slots && doc.content.slots.length> 0) { %>
+                  <section id="slots">
+                    <h2>插槽 (Slots)</h2>
+                    <table class="slots-table">
+                      <thead>
+                        <tr>
+                          <th>名称</th>
+                          <th>说明</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% doc.content.slots.forEach(function(slot) { %>
+                          <tr>
+                            <td><code><%= slot.name %></code></td>
+                            <td>
+                              <%= slot.description || '-' %>
+                            </td>
+                          </tr>
+                          <% }) %>
+                      </tbody>
+                    </table>
+                  </section>
+                  <% } %>
+
+                    <!-- Examples -->
+                    <% if (doc.content.examples && doc.content.examples.length> 0) { %>
+                      <section id="examples">
+                        <h2>示例</h2>
+                        <% doc.content.examples.forEach(function(example) { %>
+                          <div class="example">
+                            <% if (example.title) { %>
+                              <h3>
+                                <%= example.title %>
+                              </h3>
+                              <% } %>
+                                <% if (example.description) { %>
+                                  <p>
+                                    <%= example.description %>
+                                  </p>
+                                  <% } %>
+                                    <pre><code class="language-<%= example.language || 'javascript' %>"><%= example.code %></code></pre>
+                          </div>
+                          <% }) %>
+                      </section>
+                      <% } %>
+  </div>
+
+  <style>
+    .component-doc {
+      max-width: 1000px;
+    }
+
+    .component-doc h1 {
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+
+    .component-doc h2 {
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e1e4e8;
+    }
+
+    .component-doc table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .component-doc th,
+    .component-doc td {
+      padding: 0.75rem;
+      border: 1px solid #e1e4e8;
+      text-align: left;
+    }
+
+    .component-doc th {
+      background: #f8f9fa;
+      font-weight: 600;
+    }
+
+    .component-doc code {
+      padding: 0.2rem 0.4rem;
+      background: #f8f9fa;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    .component-doc pre {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    .component-doc pre code {
+      padding: 0;
+      background: none;
+    }
+
+    .example {
+      margin: 2rem 0;
+    }
+  </style>
+  <% body=include('layout', { body: '<div class="component-doc">...</div>' }) %>
+    <%- include('layout', { body: '<div class="component-doc">' + body + '</div>' }) %>
+
+

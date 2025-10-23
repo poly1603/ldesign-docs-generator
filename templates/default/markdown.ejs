@@ -1,0 +1,104 @@
+<div class="markdown-doc">
+  <%- doc.content.html %>
+</div>
+
+<style>
+  .markdown-doc {
+    max-width: 800px;
+    line-height: 1.8;
+  }
+
+  .markdown-doc h1,
+  .markdown-doc h2,
+  .markdown-doc h3 {
+    margin: 2rem 0 1rem;
+  }
+
+  .markdown-doc h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+  }
+
+  .markdown-doc h2 {
+    font-size: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e1e4e8;
+  }
+
+  .markdown-doc h3 {
+    font-size: 1.25rem;
+  }
+
+  .markdown-doc p {
+    margin: 1rem 0;
+  }
+
+  .markdown-doc a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+
+  .markdown-doc a:hover {
+    text-decoration: underline;
+  }
+
+  .markdown-doc code {
+    padding: 0.2rem 0.4rem;
+    background: #f8f9fa;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .markdown-doc pre {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  .markdown-doc pre code {
+    padding: 0;
+    background: none;
+  }
+
+  .markdown-doc table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  .markdown-doc th,
+  .markdown-doc td {
+    padding: 0.75rem;
+    border: 1px solid #e1e4e8;
+    text-align: left;
+  }
+
+  .markdown-doc th {
+    background: #f8f9fa;
+    font-weight: 600;
+  }
+
+  .markdown-doc blockquote {
+    padding: 0 1rem;
+    border-left: 4px solid #e1e4e8;
+    color: #666;
+    margin: 1rem 0;
+  }
+
+  .markdown-doc ul,
+  .markdown-doc ol {
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .markdown-doc img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+</style>
+<%- include('layout', { body: include('markdown', {}) }) %>
+
+

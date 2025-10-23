@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="<%= site.lang || 'zh-CN' %>">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %>
+  </title>
+  <% if (site.description) { %>
+    <meta name="description" content="<%= site.description %>">
+    <% } %>
+      <link rel="stylesheet" href="/assets/theme-variables.css">
+      <link rel="stylesheet" href="/assets/main.css">
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: var(--font-family);
+          font-size: var(--font-size);
+          color: var(--text-color);
+          background: var(--background-color);
+          line-height: 1.6;
+        }
+
+        .layout {
+          display: flex;
+          min-height: 100vh;
+        }
+
+        .sidebar {
+          width: var(--sidebar-width);
+          background: #f8f9fa;
+          border-right: 1px solid #e1e4e8;
+          position: fixed;
+          height: 100vh;
+          overflow-y: auto;
+        }
+
+        .main {
+          flex: 1;
+          margin-left: var(--sidebar-width);
+          padding: 2rem;
+          max-width: var(--content-max-width);
+        }
+
+        .header {
+          padding: 1rem 2rem;
+          border-bottom: 1px solid #e1e4e8;
+          background: white;
+        }
+
+        .header h1 {
+          font-size: 1.5rem;
+          color: var(--primary-color);
+        }
+
+        .nav-link {
+          display: block;
+          padding: 0.5rem 1rem;
+          color: #333;
+          text-decoration: none;
+          transition: background 0.2s;
+        }
+
+        .nav-link:hover {
+          background: rgba(0, 0, 0, 0.05);
+        }
+
+        .breadcrumb {
+          display: flex;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+          font-size: 0.9rem;
+          color: #666;
+        }
+
+        .breadcrumb a {
+          color: var(--primary-color);
+          text-decoration: none;
+        }
+
+        .toc {
+          position: fixed;
+          right: 2rem;
+          top: 6rem;
+          width: 200px;
+        }
+
+        .toc-title {
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+        }
+
+        .toc-link {
+          display: block;
+          padding: 0.25rem 0;
+          font-size: 0.9rem;
+          color: #666;
+          text-decoration: none;
+        }
+
+        .toc-link:hover {
+          color: var(--primary-color);
+        }
+      </style>
+</head>
+
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="header">
+        <h1>
+          <%= site.title %>
+        </h1>
+      </div>
+      <nav>
+        <% navigation.sidebar.forEach(function(item) { %>
+          <%- include('sidebar-item', { item }) %>
+            <% }) %>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Breadcrumb -->
+      <% if (breadcrumb && breadcrumb.length> 0) { %>
+        <div class="breadcrumb">
+          <% breadcrumb.forEach(function(item, index) { %>
+            <% if (index> 0) { %> / <% } %>
+                <% if (item.link) { %>
+                  <a href="<%= item.link %>">
+                    <%= item.text %>
+                  </a>
+                  <% } else { %>
+                    <span>
+                      <%= item.text %>
+                    </span>
+                    <% } %>
+                      <% }) %>
+        </div>
+        <% } %>
+
+          <!-- Page Content -->
+          <%- body %>
+    </main>
+
+    <!-- TOC -->
+    <% if (toc && toc.length> 0) { %>
+      <aside class="toc">
+        <div class="toc-title">目录</div>
+        <% toc.forEach(function(item) { %>
+          <a href="#<%= item.slug %>" class="toc-link">
+            <%= item.title %>
+          </a>
+          <% }) %>
+      </aside>
+      <% } %>
+  </div>
+
+  <script src="/assets/main.js"></script>
+</body>
+
+</html>
+
+

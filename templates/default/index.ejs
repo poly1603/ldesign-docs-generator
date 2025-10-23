@@ -1,0 +1,108 @@
+<div class="index-page">
+  <div class="hero">
+    <h1>
+      <%= site.title %>
+    </h1>
+    <% if (site.description) { %>
+      <p class="hero-description">
+        <%= site.description %>
+      </p>
+      <% } %>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">
+        <%= stats.total %>
+      </div>
+      <div class="stat-label">总文档数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">
+        <%= stats.api %>
+      </div>
+      <div class="stat-label">API 文档</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">
+        <%= stats.component %>
+      </div>
+      <div class="stat-label">组件文档</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">
+        <%= stats.markdown %>
+      </div>
+      <div class="stat-label">Markdown 文档</div>
+    </div>
+  </div>
+
+  <div class="quick-start">
+    <h2>快速开始</h2>
+    <p>浏览左侧导航栏，选择您感兴趣的内容开始阅读。</p>
+  </div>
+</div>
+
+<style>
+  .index-page {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 4rem 0;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  .hero-description {
+    font-size: 1.25rem;
+    color: #666;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 3rem 0;
+  }
+
+  .stat-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+
+  .quick-start {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+
+  .quick-start h2 {
+    margin-bottom: 1rem;
+  }
+</style>
+<%- include('layout', { body: include('index', {}) }) %>
+
+

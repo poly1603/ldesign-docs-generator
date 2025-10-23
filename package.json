@@ -1,17 +1,88 @@
 {
   "name": "@ldesign/docs-generator",
-  "version": "0.1.0",
-  "description": "LDesign 文档生成器 - API 文档、组件文档、TypeDoc 集成",
-  "keywords": ["ldesign", "docs", "documentation", "typedoc", "vitepress"],
+  "version": "1.0.1",
+  "description": "LDesign 智能文档生成器 - API 文档、组件文档、交互式示例、多版本支持",
+  "keywords": [
+    "ldesign",
+    "docs",
+    "documentation",
+    "typedoc",
+    "vue",
+    "react",
+    "component-docs",
+    "api-docs",
+    "static-site-generator"
+  ],
   "author": "LDesign Team",
   "license": "MIT",
   "type": "module",
   "main": "./lib/index.cjs",
   "module": "./es/index.js",
-  "scripts": {"build": "ldesign-builder build -f esm,cjs,dts"},
-  "dependencies": {"@ldesign/kit": "workspace:*"},
-  "devDependencies": {"@ldesign/builder": "workspace:*", "typescript": "^5.7.3", "typedoc": "^0.25.0", "vitepress": "^1.0.0"}
+  "types": "./es/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./es/index.d.ts",
+      "import": "./es/index.js",
+      "require": "./lib/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "ldesign-docs": "./bin/cli.js"
+  },
+  "files": [
+    "es",
+    "lib",
+    "bin",
+    "templates",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "ldesign-builder build -f esm,cjs,dts",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "verify": "tsx scripts/verify-build.ts",
+    "prepublishOnly": "pnpm verify && pnpm build"
+  },
+  "dependencies": {
+    "@ldesign/kit": "workspace:*",
+    "typedoc": "^0.25.0",
+    "@vue/compiler-sfc": "^3.4.0",
+    "markdown-it": "^14.0.0",
+    "gray-matter": "^4.0.3",
+    "doctrine": "^3.0.0",
+    "glob": "^10.3.0",
+    "fs-extra": "^11.2.0",
+    "commander": "^12.0.0",
+    "ejs": "^3.1.9",
+    "minisearch": "^6.3.0"
+  },
+  "devDependencies": {
+    "@ldesign/builder": "workspace:*",
+    "typescript": "^5.7.3",
+    "vitepress": "^1.0.0",
+    "@types/node": "^20.0.0",
+    "@types/markdown-it": "^13.0.0",
+    "@types/fs-extra": "^11.0.0",
+    "@types/doctrine": "^0.0.9",
+    "@types/ejs": "^3.1.0",
+    "vitest": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ldesign/ldesign.git",
+    "directory": "tools/docs-generator"
+  }
 }
+
+
+
 
 
 

@@ -1,0 +1,18 @@
+<% if (item.link) { %>
+  <a href="<%= item.link %>" class="nav-link">
+    <%= item.text %>
+  </a>
+  <% } else { %>
+    <div class="nav-link" style="font-weight: bold; background: rgba(0,0,0,0.05);">
+      <%= item.text %>
+    </div>
+    <% } %>
+      <% if (item.items && item.items.length> 0) { %>
+        <div style="padding-left: 1rem;">
+          <% item.items.forEach(function(subItem) { %>
+            <%- include('sidebar-item', { item: subItem }) %>
+              <% }) %>
+        </div>
+        <% } %>
+
+

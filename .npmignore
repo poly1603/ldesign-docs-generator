@@ -1,0 +1,33 @@
+# 源代码（打包后不需要）
+src/
+__tests__/
+examples/
+
+# 配置文件
+tsconfig.json
+vitest.config.ts
+.gitignore
+
+# 文档（保留README和CHANGELOG）
+PROJECT_PLAN.md
+IMPLEMENTATION_SUMMARY.md
+OPTIMIZATION_SUMMARY.md
+🎉_PROJECT_COMPLETED.md
+QUICK_START.md
+docs-generator.config.example.ts
+
+# 开发文件
+*.log
+.cache/
+node_modules/
+coverage/
+.DS_Store
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+
+
+
+

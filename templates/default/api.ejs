@@ -1,0 +1,182 @@
+<div class="api-doc">
+  <h1>
+    <%= doc.name %>
+  </h1>
+
+  <div class="api-meta">
+    <span class="kind-badge">
+      <%= doc.content.kind %>
+    </span>
+    <% if (doc.content.deprecated) { %>
+      <span class="deprecated-badge">已废弃</span>
+      <% } %>
+  </div>
+
+  <!-- Description -->
+  <% if (doc.content.comments && doc.content.comments.length> 0) { %>
+    <section id="description">
+      <h2>说明</h2>
+      <% doc.content.comments.forEach(function(comment) { %>
+        <% if (comment.summary) { %>
+          <p>
+            <%= comment.summary %>
+          </p>
+          <% } %>
+            <% if (comment.description) { %>
+              <div class="description">
+                <%= comment.description %>
+              </div>
+              <% } %>
+                <% }) %>
+    </section>
+    <% } %>
+
+      <!-- Signatures -->
+      <% if (doc.content.signatures && doc.content.signatures.length> 0) { %>
+        <section id="signatures">
+          <h2>签名</h2>
+          <% doc.content.signatures.forEach(function(sig) { %>
+            <div class="signature">
+              <pre><code><%= sig.name %>(<%= sig.parameters.map(p => p.name + (p.optional ? '?' : '') + ': ' + (typeof p.type === 'string' ? p.type : p.type.name)).join(', ') %>): <%= typeof sig.returnType === 'string' ? sig.returnType : sig.returnType.name %></code></pre>
+            </div>
+            <% }) %>
+        </section>
+        <% } %>
+
+          <!-- Parameters -->
+          <% if (doc.content.signatures && doc.content.signatures[0] && doc.content.signatures[0].parameters.length> 0)
+            { %>
+            <section id="parameters">
+              <h2>参数</h2>
+              <table class="params-table">
+                <thead>
+                  <tr>
+                    <th>名称</th>
+                    <th>类型</th>
+                    <th>必填</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% doc.content.signatures[0].parameters.forEach(function(param) { %>
+                    <tr>
+                      <td><code><%= param.name %></code></td>
+                      <td><code><%= typeof param.type === 'string' ? param.type : param.type.name %></code></td>
+                      <td>
+                        <%= param.optional ? '否' : '是' %>
+                      </td>
+                      <td>
+                        <%= param.description || '-' %>
+                      </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+              </table>
+            </section>
+            <% } %>
+
+              <!-- Return -->
+              <% if (doc.content.signatures && doc.content.signatures[0]) { %>
+                <section id="return">
+                  <h2>返回值</h2>
+                  <p>
+                    <code><%= typeof doc.content.signatures[0].returnType === 'string' ? doc.content.signatures[0].returnType : doc.content.signatures[0].returnType.name %></code>
+                  </p>
+                </section>
+                <% } %>
+
+                  <!-- Examples -->
+                  <% if (doc.content.comments && doc.content.comments[0] && doc.content.comments[0].examples) { %>
+                    <section id="examples">
+                      <h2>示例</h2>
+                      <% doc.content.comments[0].examples.forEach(function(example) { %>
+                        <div class="example">
+                          <pre><code class="language-typescript"><%= example %></code></pre>
+                        </div>
+                        <% }) %>
+                    </section>
+                    <% } %>
+</div>
+
+<style>
+  .api-doc {
+    max-width: 1000px;
+  }
+
+  .api-doc h1 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+
+  .api-doc h2 {
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e1e4e8;
+  }
+
+  .api-meta {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .kind-badge {
+    padding: 0.25rem 0.75rem;
+    background: #3498db;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+
+  .deprecated-badge {
+    padding: 0.25rem 0.75rem;
+    background: #e74c3c;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+
+  .api-doc table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  .api-doc th,
+  .api-doc td {
+    padding: 0.75rem;
+    border: 1px solid #e1e4e8;
+    text-align: left;
+  }
+
+  .api-doc th {
+    background: #f8f9fa;
+    font-weight: 600;
+  }
+
+  .api-doc code {
+    padding: 0.2rem 0.4rem;
+    background: #f8f9fa;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .api-doc pre {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+
+  .api-doc pre code {
+    padding: 0;
+    background: none;
+  }
+
+  .signature {
+    margin: 1rem 0;
+  }
+</style>
+<%- include('layout', { body: include('api', {}) }) %>
+
+
