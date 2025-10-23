@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="<%= site.lang || 'zh-CN' %>">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= doc.metadata.title || doc.name %> - <%= site.title %> API
+  </title>
+  <link rel="stylesheet" href="/assets/api/main.css">
+</head>
+
+<body>
+  <!-- API 文档专用主题 -->
+  <div class="api-layout">
+    <!-- 顶部栏 -->
+    <header class="api-header">
+      <div class="api-header-content">
+        <h1>
+          <%= site.title %> API
+        </h1>
+        <div class="api-version">v<%= site.version || '1.0.0' %>
+        </div>
+      </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <nav class="api-sidebar">
+      <div class="api-search">
+        <input type="search" placeholder="搜索 API..." class="api-search-input">
+      </div>
+
+      <div class="api-nav">
+        <%- renderApiNav(navigation.sidebar) %>
+      </div>
+    </nav>
+
+    <!-- API 内容 -->
+    <main class="api-main">
+      <div class="api-content">
+        <%- content %>
+      </div>
+    </main>
+
+    <!-- API 信息侧栏 -->
+    <aside class="api-info">
+      <% if (doc.content.signatures && doc.content.signatures.length> 0) { %>
+        <div class="info-section">
+          <h4>签名</h4>
+          <% doc.content.signatures.forEach(sig=> { %>
+            <pre><code><%= formatSignature(sig) %></code></pre>
+            <% }) %>
+        </div>
+        <% } %>
+
+          <% if (doc.metadata.since) { %>
+            <div class="info-section">
+              <h4>版本</h4>
+              <p>自 v<%= doc.metadata.since %>
+              </p>
+            </div>
+            <% } %>
+
+              <% if (doc.content.deprecated) { %>
+                <div class="info-section warning">
+                  <h4>⚠️ 已废弃</h4>
+                  <p>此 API 已废弃，请使用替代方案</p>
+                </div>
+                <% } %>
+    </aside>
+  </div>
+
+  <script src="/assets/api/main.js"></script>
+</body>
+
+</html>
+
+<% function renderApiNav(items) { if (!items || items.length===0) return '' return `<ul class="api-nav-list">
+  ${items.map(item => `
+  <li class="api-nav-item">
+    <a href="${item.link || '#'}" class="api-nav-link">
+      ${item.text}
+    </a>
+    ${item.items && item.items.length > 0 ? renderApiNav(item.items) : ''}
+  </li>
+  `).join('')}
+  </ul>`
+  }
+
+  function formatSignature(sig) {
+  const params = sig.parameters.map(p =>
+  `${p.name}${p.optional ? '?' : ''}: ${p.type.name}`
+  ).join(', ')
+
+  return `${sig.name}(${params}): ${sig.returnType.name}`
+  }
+  %>

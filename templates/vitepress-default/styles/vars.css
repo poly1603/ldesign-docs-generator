@@ -1,0 +1,161 @@
+/**
+ * CSS 变量定义
+ * 统一管理主题颜色和样式
+ */
+
+:root {
+  /* 颜色 - 浅色模式 */
+  --vp-c-white: #ffffff;
+  --vp-c-black: #000000;
+
+  --vp-c-gray-1: #f6f8fa;
+  --vp-c-gray-2: #e4e7eb;
+  --vp-c-gray-3: #d1d5db;
+  --vp-c-gray-soft: rgba(142, 150, 170, 0.14);
+
+  --vp-c-text-1: #213547;
+  --vp-c-text-2: #476582;
+  --vp-c-text-3: #7f8c9a;
+
+  --vp-c-divider: rgba(60, 60, 67, 0.12);
+  --vp-c-gutter: rgba(60, 60, 67, 0.04);
+
+  --vp-c-brand: #42b983;
+  --vp-c-brand-light: #5bd19d;
+  --vp-c-brand-lighter: #73daa8;
+  --vp-c-brand-dark: #33a06f;
+  --vp-c-brand-darker: #268d5f;
+
+  --vp-c-tip: #42b983;
+  --vp-c-warning: #f59e0b;
+  --vp-c-danger: #ef4444;
+
+  /* 背景 */
+  --bg-color: var(--vp-c-white);
+  --sidebar-bg: var(--vp-c-gray-1);
+  --text-color: var(--vp-c-text-1);
+  --border-color: var(--vp-c-divider);
+
+  /* 字体 */
+  --vp-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --vp-font-family-mono: 'Fira Code', Menlo, Monaco, Consolas, 'Courier New', monospace;
+
+  /* 间距 */
+  --vp-layout-max-width: 1600px;
+  --vp-sidebar-width: 280px;
+  --vp-toc-width: 240px;
+
+  /* 阴影 */
+  --vp-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --vp-shadow-2: 0 3px 12px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.07);
+  --vp-shadow-3: 0 12px 32px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  /* 过渡 */
+  --vp-transition-duration: 0.25s;
+  --vp-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 暗黑模式 */
+.dark {
+  --vp-c-gray-1: #2a2a2a;
+  --vp-c-gray-2: #3a3a3a;
+  --vp-c-gray-3: #4a4a4a;
+
+  --vp-c-text-1: #e4e4e7;
+  --vp-c-text-2: #a1a1aa;
+  --vp-c-text-3: #71717a;
+
+  --vp-c-divider: rgba(255, 255, 255, 0.12);
+  --vp-c-gutter: rgba(255, 255, 255, 0.04);
+
+  --bg-color: #1a1a1a;
+  --sidebar-bg: #161618;
+  --text-color: var(--vp-c-text-1);
+  --border-color: var(--vp-c-divider);
+}
+
+/* 全局样式 */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--vp-font-family-base);
+  font-size: 16px;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color var(--vp-transition-duration) var(--vp-transition-timing),
+    color var(--vp-transition-duration) var(--vp-transition-timing);
+}
+
+/* 代码字体 */
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--vp-font-family-mono);
+}
+
+/* 选择文本 */
+::selection {
+  background-color: rgba(66, 185, 131, 0.3);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 聚焦样式 */
+:focus-visible {
+  outline: 2px solid #42b983;
+  outline-offset: 2px;
+}
+
+/* 打印样式 */
+@media print {
+
+  .navbar,
+  .sidebar,
+  .toc,
+  .footer,
+  .back-to-top,
+  .theme-toggle,
+  .language-switcher {
+    display: none !important;
+  }
+
+  .main-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+}

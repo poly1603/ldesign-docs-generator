@@ -1,0 +1,28 @@
+{
+  "files": {
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\utils.ts": {
+      "path": "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\utils.ts",
+      "hash": "242ff6a462d3d7ebe30ee8e81c8fd5fd",
+      "mtime": 1761215321148.2244,
+      "size": 511
+    },
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\README.md": {
+      "path": "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\README.md",
+      "hash": "84b5ea5c9c97cb06a65e8574dd06391d",
+      "mtime": 1761215294681.917,
+      "size": 534
+    },
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\index.md": {
+      "path": "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\index.md",
+      "hash": "9b7672bee280411d2ccc36178d9c4cfc",
+      "mtime": 1761216183513.243,
+      "size": 207
+    }
+  },
+  "results": {
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\utils.ts": [],
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\README.md": [],
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\test-demo\\src\\index.md": []
+  },
+  "version": "1.0.0"
+}

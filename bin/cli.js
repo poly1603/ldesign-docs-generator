@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+/**
+ * @ldesign/docs-generator CLI Entry
+ */
+
 // 检查 Node.js 版本
 const nodeVersion = process.versions.node
 const majorVersion = parseInt(nodeVersion.split('.')[0], 10)
@@ -13,9 +17,11 @@ if (majorVersion < 18) {
 
 // 加载 CLI
 try {
-  require('../lib/cli/index.cjs')
+  import('../dist/cli.js').catch((error) => {
+    console.error('❌ CLI 启动失败:', error)
+    process.exit(1)
+  })
 } catch (error) {
   console.error('❌ CLI 启动失败:', error)
   process.exit(1)
 }
-

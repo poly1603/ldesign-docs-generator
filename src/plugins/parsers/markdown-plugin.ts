@@ -4,7 +4,7 @@
 
 import * as fs from 'fs-extra'
 import * as path from 'path'
-import * as matter from 'gray-matter'
+import matter from 'gray-matter'
 import MarkdownIt from 'markdown-it'
 import type Token from 'markdown-it/lib/token'
 import type {

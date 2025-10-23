@@ -2,7 +2,7 @@
  * Markdown 处理工具函数
  */
 
-import * as matter from 'gray-matter'
+import matter from 'gray-matter'
 import type { TOCItem } from '../types'
 
 /**

@@ -2,7 +2,7 @@
  * @ldesign/docs-generator - 类型定义
  */
 
-import type { Logger as KitLogger } from '@ldesign/kit'
+import type { InlineConfig as ViteConfig } from 'vite'
 
 /**
  * 日志接口
@@ -13,6 +13,7 @@ export interface Logger {
   error(message: string, ...args: any[]): void
   debug(message: string, ...args: any[]): void
   success(message: string, ...args: any[]): void
+  createChild?: (name: string) => Logger
 }
 
 /**
@@ -246,14 +247,64 @@ export interface DocsPlugin {
   name: string
   /** 插件版本 */
   version: string
+  /** 插件作者 */
+  author?: string
+  /** 插件描述 */
+  description?: string
+  /** 插件标签 */
+  tags?: string[]
+  /** 插件依赖 */
+  dependencies?: string[]
+  /** 插件配置 Schema */
+  configSchema?: PluginConfigSchema
+  /** 插件配置 */
+  config?: any
+  /** 解析前钩子 */
+  beforeParse?: (context: ParseContext) => Promise<void>
   /** 解析钩子 */
   parse?: (context: ParseContext) => Promise<ParseResult>
+  /** 解析后钩子 */
+  afterParse?: (result: ParseResult, context: ParseContext) => Promise<ParseResult>
+  /** 转换前钩子 */
+  beforeTransform?: (docs: DocNode[], context: ParseContext) => Promise<void>
   /** 转换钩子 */
   transform?: (docs: DocNode[], context: ParseContext) => Promise<DocNode[]>
+  /** 转换后钩子 */
+  afterTransform?: (docs: DocNode[], context: ParseContext) => Promise<DocNode[]>
+  /** 生成前钩子 */
+  beforeGenerate?: (context: GenerateContext) => Promise<void>
   /** 生成钩子 */
   generate?: (context: GenerateContext) => Promise<void>
+  /** 生成后钩子 */
+  afterGenerate?: (context: GenerateContext) => Promise<void>
   /** 清理钩子 */
   cleanup?: () => Promise<void>
+}
+
+/**
+ * 插件配置 Schema
+ */
+export interface PluginConfigSchema {
+  /** Schema 类型 */
+  type: 'object'
+  /** 属性定义 */
+  properties: Record<string, SchemaProperty>
+  /** 必填字段 */
+  required?: string[]
+  /** 默认值 */
+  defaults?: Record<string, any>
+}
+
+/**
+ * Schema 属性
+ */
+export interface SchemaProperty {
+  type: 'string' | 'number' | 'boolean' | 'array' | 'object'
+  description?: string
+  default?: any
+  enum?: any[]
+  items?: SchemaProperty
+  properties?: Record<string, SchemaProperty>
 }
 
 /**
@@ -276,6 +327,160 @@ export interface DocsGeneratorOptions {
   cacheDir?: string
   /** 日志级别 */
   logLevel?: 'silent' | 'error' | 'warn' | 'info' | 'debug'
+  /** Vite 配置（开发服务器和构建）*/
+  vite?: ViteConfig
+  /** Markdown 配置 */
+  markdown?: MarkdownConfig
+  /** i18n 配置 */
+  i18n?: I18nConfig
+  /** 构建配置 */
+  build?: BuildConfig
+  /** PWA 配置 */
+  pwa?: PWAConfig
+  /** 评论配置 */
+  comments?: CommentsConfig
+  /** 分析配置 */
+  analytics?: AnalyticsConfig
+}
+
+/**
+ * i18n 配置
+ */
+export interface I18nConfig {
+  /** 默认语言 */
+  defaultLocale: string
+  /** 所有语言配置 */
+  locales: Record<string, LocaleConfig>
+  /** 回退语言 */
+  fallbackLocale?: string
+}
+
+/**
+ * 语言配置
+ */
+export interface LocaleConfig {
+  /** 语言代码 */
+  lang: string
+  /** 语言标签 */
+  label: string
+  /** 选择器中显示的文本 */
+  selectText?: string
+  /** 翻译文本 */
+  translations?: Record<string, string>
+}
+
+/**
+ * 构建配置
+ */
+export interface BuildConfig {
+  /** 代码分割配置 */
+  codeSplit?: CodeSplitConfig
+  /** 图片优化配置 */
+  imageOptimization?: ImageOptimizationConfig
+  /** 预取配置 */
+  prefetch?: PrefetchConfig
+  /** Critical CSS 配置 */
+  criticalCss?: CriticalCssConfig
+}
+
+/**
+ * 代码分割配置
+ */
+export interface CodeSplitConfig {
+  enabled?: boolean
+  splitVendor?: boolean
+  chunkSizeThreshold?: number
+  manualChunks?: Record<string, string[]>
+}
+
+/**
+ * 图片优化配置
+ */
+export interface ImageOptimizationConfig {
+  enabled?: boolean
+  convertToWebP?: boolean
+  quality?: number
+  responsive?: boolean
+}
+
+/**
+ * 预取配置
+ */
+export interface PrefetchConfig {
+  enabled?: boolean
+  preload?: boolean
+  prefetchPages?: boolean
+  strategy?: 'eager' | 'lazy' | 'viewport'
+}
+
+/**
+ * Critical CSS 配置
+ */
+export interface CriticalCssConfig {
+  enabled?: boolean
+  inline?: boolean
+  minify?: boolean
+  width?: number
+  height?: number
+}
+
+/**
+ * PWA 配置
+ */
+export interface PWAConfig {
+  enabled?: boolean
+  name: string
+  shortName?: string
+  description?: string
+  themeColor?: string
+  backgroundColor?: string
+}
+
+/**
+ * 评论配置
+ */
+export interface CommentsConfig {
+  enabled?: boolean
+  provider?: 'giscus' | 'utterances' | 'custom'
+  giscus?: GiscusConfig
+}
+
+/**
+ * Giscus 配置
+ */
+export interface GiscusConfig {
+  repo: string
+  repoId: string
+  category: string
+  categoryId: string
+  mapping?: 'pathname' | 'url' | 'title'
+  reactionsEnabled?: boolean
+  theme?: string
+  lang?: string
+}
+
+/**
+ * 分析配置
+ */
+export interface AnalyticsConfig {
+  enabled?: boolean
+  google?: GoogleAnalyticsConfig
+  baidu?: BaiduAnalyticsConfig
+}
+
+/**
+ * Google Analytics 配置
+ */
+export interface GoogleAnalyticsConfig {
+  measurementId: string
+  enhancedMeasurement?: boolean
+}
+
+/**
+ * 百度统计配置
+ */
+export interface BaiduAnalyticsConfig {
+  siteId: string
 }
 
 /**
@@ -344,6 +549,28 @@ export interface NavigationConfig {
   breadcrumb?: boolean
   /** 是否启用 TOC */
   toc?: boolean
+}
+
+/**
+ * Markdown 配置
+ */
+export interface MarkdownConfig {
+  /** 是否启用代码行号 */
+  lineNumbers?: boolean
+  /** 是否启用容器 */
+  containers?: boolean
+  /** 容器配置 */
+  containersConfig?: any
+  /** 是否启用 Emoji */
+  emoji?: boolean
+  /** 是否启用锚点 */
+  anchor?: boolean
+  /** 代码高亮主题 */
+  theme?: 'dark-plus' | 'light-plus' | 'monokai' | 'nord' | 'one-dark-pro'
+  /** 自定义 Markdown-it 选项 */
+  markdownItOptions?: any
+  /** 自定义 Markdown-it 插件 */
+  markdownItPlugins?: any[]
 }
 
 /**

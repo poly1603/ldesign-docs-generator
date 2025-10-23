@@ -7,7 +7,7 @@ import {
   Application,
   TSConfigReader,
   TypeDocReader,
-  type DeclarationReflection,
+  DeclarationReflection,
   type Reflection,
   ReflectionKind,
   type ProjectReflection,
@@ -145,7 +145,7 @@ export class TypeDocPlugin implements DocsPlugin {
       outputPath: this.generateOutputPath(reflection),
       metadata: {
         kind: ReflectionKind[reflection.kind],
-        kindString: reflection.kindString,
+        kindString: (reflection as any).kindString,
         flags: reflection.flags,
         source: source
           ? {
@@ -156,7 +156,7 @@ export class TypeDocPlugin implements DocsPlugin {
           : undefined,
       },
       content: {
-        kind: reflection.kindString || 'Unknown',
+        kind: (reflection as any).kindString || 'Unknown',
         signatures: this.extractSignatures(reflection),
         comments: comment ? [comment] : undefined,
         deprecated: comment?.tags?.some((t) => t.tag === 'deprecated'),

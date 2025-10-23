@@ -5,9 +5,10 @@
 
 import { Command } from 'commander'
 import * as path from 'path'
-import * as fs from 'fs-extra'
+import fs from 'fs-extra'
 import { DocsGenerator } from '../core/DocsGenerator'
 import type { DocsGeneratorOptions } from '../types'
+import { registerThemeCommands } from './theme-create'
 
 const program = new Command()
 
@@ -108,11 +109,59 @@ program
   })
 
 /**
- * 预览命令
+ * 开发命令 (dev) - 使用 Vite 开发服务器
+ */
+program
+  .command('dev')
+  .description('启动 Vite 开发服务器（支持 HMR）')
+  .option('-c, --config <path>', '配置文件路径', 'docs-generator.config.js')
+  .option('-p, --port <port>', '端口号', '3000')
+  .option('--open', '自动打开浏览器')
+  .option('--https', '启用 HTTPS')
+  .action(async (options) => {
+    try {
+      console.log('🚀 启动 Vite 开发服务器...\n')
+
+      // 加载配置
+      const config = await loadConfig(options.config, {})
+
+      // 导入 Vite 开发服务器
+      const { startDevServer } = await import('../vite/dev-server')
+      const { Logger } = await import('../core/Logger')
+
+      const logger = new Logger('info')
+
+      const server = await startDevServer({
+        sourceDir: config.sourceDir,
+        outputDir: config.outputDir,
+        configFile: path.resolve(process.cwd(), options.config),
+        port: parseInt(options.port),
+        open: options.open,
+        https: options.https,
+        logger,
+        vite: config.vite,
+      })
+
+      // 处理退出信号
+      process.on('SIGINT', async () => {
+        console.log('\n\n👋 正在关闭服务器...')
+        await server.close()
+        console.log('✨ 服务器已关闭')
+        process.exit(0)
+      })
+    } catch (error) {
+      console.error('❌ 启动失败:', error)
+      process.exit(1)
+    }
+  })
+
+/**
+ * 预览命令 (serve) - 预览构建产物
  */
 program
   .command('serve')
-  .description('启动开发服务器预览文档')
+  .alias('preview')
+  .description('预览构建后的文档')
   .option('-p, --port <port>', '端口号', '3000')
   .option('-d, --dir <dir>', '文档目录', './docs')
   .option('--open', '自动打开浏览器')
@@ -274,6 +323,9 @@ async function loadConfig(
 
   return finalConfig
 }
+
+// 注册主题相关命令
+registerThemeCommands(program)
 
 // 解析命令行参数
 program.parse()

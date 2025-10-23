@@ -1,6 +1,6 @@
 {
   "name": "@ldesign/docs-generator",
-  "version": "1.0.1",
+  "version": "3.0.0-alpha.1",
   "description": "LDesign 智能文档生成器 - API 文档、组件文档、交互式示例、多版本支持",
   "keywords": [
     "ldesign",
@@ -16,14 +16,14 @@
   "author": "LDesign Team",
   "license": "MIT",
   "type": "module",
-  "main": "./lib/index.cjs",
-  "module": "./es/index.js",
-  "types": "./es/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./es/index.d.ts",
-      "import": "./es/index.js",
-      "require": "./lib/index.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -31,8 +31,7 @@
     "ldesign-docs": "./bin/cli.js"
   },
   "files": [
-    "es",
-    "lib",
+    "dist",
     "bin",
     "templates",
     "README.md",
@@ -40,36 +39,61 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "ldesign-builder build -f esm,cjs,dts",
-    "test": "vitest",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "verify": "tsx scripts/verify-build.ts",
-    "prepublishOnly": "pnpm verify && pnpm build"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "pnpm build && pnpm test"
   },
   "dependencies": {
     "@ldesign/kit": "workspace:*",
     "typedoc": "^0.25.0",
     "@vue/compiler-sfc": "^3.4.0",
     "markdown-it": "^14.0.0",
+    "markdown-it-container": "^4.0.0",
+    "markdown-it-emoji": "^3.0.0",
+    "markdown-it-anchor": "^9.0.0",
     "gray-matter": "^4.0.3",
     "doctrine": "^3.0.0",
     "glob": "^10.3.0",
     "fs-extra": "^11.2.0",
     "commander": "^12.0.0",
     "ejs": "^3.1.9",
-    "minisearch": "^6.3.0"
+    "minisearch": "^6.3.0",
+    "vite": "^5.0.0",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vue": "^3.4.0",
+    "shiki": "^1.0.0",
+    "chokidar": "^3.5.3"
+  },
+  "optionalDependencies": {
+    "handlebars": "^4.7.8",
+    "nunjucks": "^3.2.4",
+    "algoliasearch": "^4.20.0",
+    "codesandbox": "^2.2.3",
+    "@stackblitz/sdk": "^1.9.0",
+    "html-minifier-terser": "^7.2.0",
+    "sharp": "^0.33.0",
+    "imagemin": "^8.0.0",
+    "workbox-webpack-plugin": "^7.0.0"
   },
   "devDependencies": {
-    "@ldesign/builder": "workspace:*",
     "typescript": "^5.7.3",
-    "vitepress": "^1.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.7.0",
     "@types/node": "^20.0.0",
     "@types/markdown-it": "^13.0.0",
+    "@types/markdown-it-container": "^2.0.0",
     "@types/fs-extra": "^11.0.0",
     "@types/doctrine": "^0.0.9",
     "@types/ejs": "^3.1.0",
-    "vitest": "^1.0.0"
+    "@types/handlebars": "^4.1.0",
+    "vitest": "^1.0.0",
+    "@vitest/coverage-v8": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

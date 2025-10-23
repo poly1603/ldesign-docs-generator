@@ -243,6 +243,7 @@ function generate404Page(url: string): string {
  * 打开浏览器
  */
 function openBrowser(url: string): void {
+  const { exec } = require('child_process')
   const start =
     process.platform === 'darwin'
       ? 'open'
@@ -250,7 +251,7 @@ function openBrowser(url: string): void {
         ? 'start'
         : 'xdg-open'
 
-  require('child_process').exec(`${start} ${url}`)
+  exec(`${start} ${url}`)
 }
 
 

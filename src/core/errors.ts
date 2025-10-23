@@ -102,10 +102,9 @@ export class FileSystemError extends DocsGeneratorError {
 export class ValidationError extends DocsGeneratorError {
   constructor(
     message: string,
-    public errors: string[],
     details?: any
   ) {
-    super('VALIDATION_ERROR', message, { ...details, errors })
+    super('VALIDATION_ERROR', message, details)
     this.name = 'ValidationError'
   }
 }
@@ -188,8 +187,7 @@ export class ErrorHandler {
     }
 
     if (error instanceof ValidationError) {
-      const errors = error.errors.join('\n  - ')
-      return `验证失败:\n  - ${errors}\n\n建议: 修复上述验证错误`
+      return `验证失败: ${error.message}\n\n建议: 修复验证错误`
     }
 
     return error.message

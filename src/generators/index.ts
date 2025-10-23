@@ -6,6 +6,7 @@ export { StaticSiteEngine, type StaticSiteEngineOptions } from './StaticSiteEngi
 export { TemplateEngine, type TemplateEngineOptions } from './TemplateEngine'
 export { ThemeManager, type ThemeManagerOptions } from './ThemeManager'
 export { NavigationBuilder, type NavigationBuilderOptions } from './NavigationBuilder'
+export * from './template-adapters'
 
 
 

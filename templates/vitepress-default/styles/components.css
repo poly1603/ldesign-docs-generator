@@ -1,0 +1,346 @@
+/**
+ * 组件样式
+ * 通用组件的样式定义
+ */
+
+/* 按钮 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.btn:hover {
+  border-color: var(--vp-c-brand);
+  color: var(--vp-c-brand);
+  background-color: rgba(66, 185, 131, 0.05);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--vp-c-brand);
+  border-color: var(--vp-c-brand);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--vp-c-brand-light);
+  border-color: var(--vp-c-brand-light);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--vp-c-brand);
+  color: var(--vp-c-brand);
+}
+
+.btn-secondary:hover {
+  background-color: var(--vp-c-brand);
+  color: white;
+}
+
+/* 徽章 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.badge-tip {
+  background-color: rgba(66, 185, 131, 0.1);
+  color: var(--vp-c-tip);
+}
+
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--vp-c-warning);
+}
+
+.badge-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--vp-c-danger);
+}
+
+/* 卡片 */
+.card {
+  padding: 1.5rem;
+  background-color: var(--sidebar-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.card:hover {
+  border-color: var(--vp-c-brand);
+  box-shadow: var(--vp-shadow-2);
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+}
+
+.card-content {
+  color: var(--vp-c-text-2);
+  line-height: 1.6;
+}
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--vp-c-gray-soft);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: var(--text-color);
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tag:hover {
+  background-color: rgba(66, 185, 131, 0.1);
+  color: var(--vp-c-brand);
+}
+
+/* 分隔线 */
+.divider {
+  height: 1px;
+  margin: 2rem 0;
+  background-color: var(--border-color);
+  border: none;
+}
+
+/* 提示框 */
+.alert {
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  border-left: 4px solid;
+  border-radius: 4px;
+}
+
+.alert-info {
+  border-color: var(--vp-c-brand);
+  background-color: rgba(66, 185, 131, 0.05);
+  color: var(--vp-c-text-1);
+}
+
+.alert-warning {
+  border-color: var(--vp-c-warning);
+  background-color: rgba(245, 158, 11, 0.05);
+  color: var(--vp-c-text-1);
+}
+
+.alert-danger {
+  border-color: var(--vp-c-danger);
+  background-color: rgba(239, 68, 68, 0.05);
+  color: var(--vp-c-text-1);
+}
+
+/* 输入框 */
+.input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--vp-c-brand);
+  box-shadow: 0 0 0 3px rgba(66, 185, 131, 0.1);
+}
+
+.input::placeholder {
+  color: var(--vp-c-text-3);
+}
+
+/* 链接 */
+.link {
+  color: var(--vp-c-brand);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: var(--vp-c-brand-light);
+  text-decoration: underline;
+}
+
+/* 加载动画 */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(66, 185, 131, 0.3);
+  border-top-color: var(--vp-c-brand);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 骨架屏 */
+.skeleton {
+  background: linear-gradient(90deg,
+      var(--vp-c-gray-1) 25%,
+      var(--vp-c-gray-2) 50%,
+      var(--vp-c-gray-1) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 面包屑 */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--vp-c-text-2);
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.breadcrumb-link {
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb-link:hover {
+  color: var(--vp-c-brand);
+}
+
+.breadcrumb-separator {
+  color: var(--vp-c-text-3);
+}
+
+/* 下拉菜单 */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--vp-shadow-3);
+  z-index: 100;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(66, 185, 131, 0.05);
+  color: var(--vp-c-brand);
+}
+
+/* 进度条 */
+.progress {
+  width: 100%;
+  height: 4px;
+  background-color: var(--vp-c-gray-1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--vp-c-brand);
+  transition: width 0.3s;
+}
+
+/* 工具提示 */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 0.75rem;
+  background-color: var(--vp-c-black);
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1000;
+}
+
+.tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--vp-c-black);
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}

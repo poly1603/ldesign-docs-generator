@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="<%= site.lang || 'zh-CN' %>">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= doc.name %> - <%= site.title %>
+  </title>
+  <link rel="stylesheet" href="/assets/component/main.css">
+</head>
+
+<body>
+  <!-- 组件展示专用主题 -->
+  <div class="component-layout">
+    <!-- 头部 -->
+    <header class="comp-header">
+      <div class="comp-header-content">
+        <div class="comp-breadcrumb">
+          <a href="/">首页</a>
+          <span>/</span>
+          <span>组件</span>
+          <span>/</span>
+          <span>
+            <%= doc.name %>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="comp-main">
+      <div class="comp-hero">
+        <h1 class="comp-title">
+          <%= doc.name %>
+        </h1>
+        <% if (doc.content.description) { %>
+          <p class="comp-description">
+            <%= doc.content.description %>
+          </p>
+          <% } %>
+      </div>
+
+      <!-- 示例展示 -->
+      <% if (doc.content.examples && doc.content.examples.length> 0) { %>
+        <section class="comp-demos">
+          <h2>示例</h2>
+          <% doc.content.examples.forEach((example, index)=> { %>
+            <div class="demo-block">
+              <% if (example.title) { %>
+                <h3 class="demo-title">
+                  <%= example.title %>
+                </h3>
+                <% } %>
+
+                  <!-- 预览区 -->
+                  <div class="demo-preview">
+                    <div id="demo-<%= index %>" class="demo-content"></div>
+                  </div>
+
+                  <!-- 代码展示 -->
+                  <details class="demo-code">
+                    <summary>查看代码</summary>
+                    <pre><code class="language-<%= example.language || 'javascript' %>"><%= example.code %></code></pre>
+                  </details>
+
+                  <!-- Playground 链接 -->
+                  <div class="demo-actions">
+                    <% if (example.codesandbox) { %>
+                      <a href="<%= example.codesandbox.url %>" target="_blank" class="demo-action">
+                        CodeSandbox
+                      </a>
+                      <% } %>
+                        <% if (example.stackblitz) { %>
+                          <button class="demo-action" onclick="openStackBlitz(<%= index %>)">
+                            StackBlitz
+                          </button>
+                          <% } %>
+                  </div>
+            </div>
+            <% }) %>
+        </section>
+        <% } %>
+
+          <!-- API 文档 -->
+          <section class="comp-api">
+            <%- content %>
+          </section>
+    </main>
+
+    <!-- 侧边栏（组件列表）-->
+    <aside class="comp-sidebar">
+      <h3>组件列表</h3>
+      <nav>
+        <%- renderComponentList(navigation.sidebar) %>
+      </nav>
+    </aside>
+  </div>
+
+  <script src="/assets/component/main.js"></script>
+</body>
+
+</html>
+
+<% function renderComponentList(items) { if (!items || items.length===0) return '' return `<ul class="component-list">
+  ${items.map(item => `
+  <li>
+    <a href="${item.link || '#'}" class="component-link">
+      ${item.text}
+    </a>
+  </li>
+  `).join('')}
+  </ul>`
+  }
+  %>

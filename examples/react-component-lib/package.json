@@ -1,0 +1,19 @@
+{
+  "name": "react-component-lib-example",
+  "version": "1.0.0",
+  "description": "React 组件库文档示例",
+  "private": true,
+  "scripts": {
+    "docs:dev": "ldesign-docs generate --watch",
+    "docs:build": "ldesign-docs build",
+    "docs:serve": "ldesign-docs serve"
+  },
+  "devDependencies": {
+    "@ldesign/docs-generator": "workspace:*",
+    "@types/react": "^18.2.0",
+    "react": "^18.2.0"
+  }
+}
+
+
+

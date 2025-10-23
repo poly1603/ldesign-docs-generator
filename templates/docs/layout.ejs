@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="<%= site.lang || 'zh-CN' %>">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= doc.metadata.title || doc.name %> - <%= site.title %>
+  </title>
+  <link rel="stylesheet" href="/assets/docs/main.css">
+</head>
+
+<body>
+  <!-- VitePress 风格的文档主题 -->
+  <div class="layout">
+    <!-- 导航栏 -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <div class="navbar-brand">
+          <span class="brand-logo">
+            <%= site.title %>
+          </span>
+        </div>
+        <div class="navbar-menu">
+          <% if (navigation.topbar) { %>
+            <% navigation.topbar.forEach(item=> { %>
+              <a href="<%= item.link %>" class="navbar-item">
+                <%= item.text %>
+              </a>
+              <% }) %>
+                <% } %>
+        </div>
+        <div class="navbar-search">
+          <input type="search" class="search-input" placeholder="搜索文档..." />
+        </div>
+      </div>
+    </nav>
+
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <%- renderSidebar(navigation.sidebar) %>
+    </aside>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+      <div class="content-container">
+        <%- content %>
+
+          <!-- 编辑链接 -->
+          <div class="edit-link">
+            <a href="#">在 GitHub 上编辑此页</a>
+          </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/assets/docs/main.js"></script>
+</body>
+
+</html>
+
+<% function renderSidebar(items) { if (!items || items.length===0) return '' return `<ul class="sidebar-links">
+  ${items.map(item => `
+  <li class="sidebar-item">
+    ${item.link ?
+    `<a href="${item.link}" class="sidebar-link">${item.text}</a>` :
+    `<p class="sidebar-heading">${item.text}</p>`
+    }
+    ${item.items && item.items.length > 0 ? renderSidebar(item.items) : ''}
+  </li>
+  `).join('')}
+  </ul>`
+  }
+  %>

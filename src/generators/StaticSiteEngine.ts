@@ -44,12 +44,21 @@ export class StaticSiteEngine {
       cache: true,
     })
 
-    // 初始化主题管理器
+    // 初始化主题管理器（如果传入的是Theme对象，使用它；否则需要ThemeConfig）
+    const themeConfig = typeof options.theme.name === 'string' && !('templates' in options.theme)
+      ? options.theme as any
+      : { name: options.theme.name }
+
     this.themeManager = new ThemeManager({
-      themeConfig: options.theme,
+      themeConfig,
       builtinThemesDir: path.join(options.templateDir, 'themes'),
       logger: options.logger.createChild?.('theme') || options.logger,
     })
+
+    // 如果传入的是已解析的Theme对象，直接设置
+    if ('templates' in options.theme) {
+      this.themeManager.currentTheme = options.theme as any
+    }
 
     // 初始化导航构建器
     this.navigationBuilder = new NavigationBuilder({

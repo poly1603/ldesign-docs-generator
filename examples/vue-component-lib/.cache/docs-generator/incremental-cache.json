@@ -1,0 +1,21 @@
+{
+  "files": {
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\examples\\vue-component-lib\\src\\components\\Button.vue": {
+      "path": "D:\\WorkBench\\ldesign\\tools\\docs-generator\\examples\\vue-component-lib\\src\\components\\Button.vue",
+      "hash": "87ca6851caf00aba7165384854740f8e",
+      "mtime": 1761214643458.3337,
+      "size": 1792
+    },
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\examples\\vue-component-lib\\src\\index.md": {
+      "path": "D:\\WorkBench\\ldesign\\tools\\docs-generator\\examples\\vue-component-lib\\src\\index.md",
+      "hash": "728a47b0c00db9c4fc99c44c6c018a56",
+      "mtime": 1761216166803.8523,
+      "size": 80
+    }
+  },
+  "results": {
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\examples\\vue-component-lib\\src\\components\\Button.vue": [],
+    "D:\\WorkBench\\ldesign\\tools\\docs-generator\\examples\\vue-component-lib\\src\\index.md": []
+  },
+  "version": "1.0.0"
+}
