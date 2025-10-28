@@ -83,25 +83,59 @@ program
   })
 
 /**
- * 构建命令
+ * 构建命令 - 支持多种构建模式
  */
 program
   .command('build')
-  .description('构建生产版本文档')
+  .description('构建生产版本文档（支持 spa/ssg/hybrid 模式）')
   .option('-c, --config <path>', '配置文件路径', 'docs-generator.config.js')
   .option('-s, --source <dir>', '源目录')
   .option('-o, --output <dir>', '输出目录')
+  .option('-m, --mode <mode>', '构建模式: spa | ssg | hybrid', 'hybrid')
   .action(async (options) => {
     try {
-      console.log('🏗️  开始构建文档...\n')
+      const mode = options.mode as 'spa' | 'ssg' | 'hybrid'
+      console.log(`🏗️  开始 ${mode.toUpperCase()} 模式构建...\n`)
 
       const config = await loadConfig(options.config, options)
-      const generator = new DocsGenerator(config)
+      const { DocsGenerator } = await import('../core/DocsGenerator')
+      const { Logger } = await import('../core/Logger')
+      const { createHybridBuilder } = await import('../core/HybridBuilder')
 
-      await generator.build()
+      const logger = new Logger('info')
+      const generator = new DocsGenerator({ ...config, logLevel: 'info' })
+
+      // 解析文档
+      console.log('📝 解析文档...')
+      const parserSystem = (generator as any).parserSystem
+      const docs = await parserSystem.parseAll()
+      console.log(`✓ 已解析 ${docs.length} 个文档\n`)
+
+      // 使用 HybridBuilder 构建
+      const builder = createHybridBuilder({
+        docs,
+        config,
+        logger,
+        mode,
+      })
+
+      await builder.build()
 
       console.log('\n✨ 构建完成！')
       console.log(`📁 输出目录: ${config.outputDir}`)
+
+      // 构建统计
+      console.log('\n📊 构建统计:')
+      console.log(`  - 文档数量: ${docs.length}`)
+      console.log(`  - 构建模式: ${mode}`)
+
+      if (mode === 'spa') {
+        console.log('  - 输出类型: SPA 单页应用')
+      } else if (mode === 'ssg') {
+        console.log('  - 输出类型: 静态 HTML 页面')
+      } else {
+        console.log('  - 输出类型: SPA + 预渲染页面 (混合)')
+      }
     } catch (error) {
       console.error('❌ 构建失败:', error)
       process.exit(1)
@@ -109,43 +143,132 @@ program
   })
 
 /**
- * 开发命令 (dev) - 使用 Vite 开发服务器
+ * 开发命令 (dev) - SPA 模式，使用 Vite 开发服务器
  */
 program
   .command('dev')
-  .description('启动 Vite 开发服务器（支持 HMR）')
+  .description('启动 SPA 开发服务器（VitePress 风格，支持 HMR）')
   .option('-c, --config <path>', '配置文件路径', 'docs-generator.config.js')
   .option('-p, --port <port>', '端口号', '3000')
   .option('--open', '自动打开浏览器')
   .option('--https', '启用 HTTPS')
   .action(async (options) => {
     try {
-      console.log('🚀 启动 Vite 开发服务器...\n')
+      console.log('🚀 启动 SPA 开发服务器...\n')
 
       // 加载配置
       const config = await loadConfig(options.config, {})
 
-      // 导入 Vite 开发服务器
-      const { startDevServer } = await import('../vite/dev-server')
+      // 创建文档生成器用于解析文档
+      const { DocsGenerator } = await import('../core/DocsGenerator')
       const { Logger } = await import('../core/Logger')
+      const { generateRouteData, writeRouteData } = await import('../app/route-data-generator')
+      const { createServer } = await import('vite')
+      const vue = (await import('@vitejs/plugin-vue')).default
+      const { createRouteDataPlugin, createDocNodeDataPlugin } = await import('../vite/plugins/route-data')
+      const { createMarkdownPlugin } = await import('../vite/plugins/markdown')
+      const { createConfigHotReloadPlugin } = await import('../vite/plugins/config')
 
       const logger = new Logger('info')
+      const generator = new DocsGenerator({ ...config, logLevel: 'info' })
 
-      const server = await startDevServer({
-        sourceDir: config.sourceDir,
-        outputDir: config.outputDir,
-        configFile: path.resolve(process.cwd(), options.config),
-        port: parseInt(options.port),
-        open: options.open,
-        https: options.https,
-        logger,
-        vite: config.vite,
+      console.log('📝 解析文档...')
+
+      // 解析所有文档（使用现有 ParserSystem）
+      const parserSystem = (generator as any).parserSystem
+      const docs = await parserSystem.parseAll()
+
+      console.log(`✓ 已解析 ${docs.length} 个文档\n`)
+
+      // 生成路由数据
+      console.log('🗺️  生成路由数据...')
+      const routeData = await generateRouteData(docs)
+      const cacheDir = config.cacheDir || path.join(process.cwd(), '.cache', 'docs-generator')
+      await writeRouteData(routeData, cacheDir)
+
+      console.log(`✓ 路由: ${routeData.routes.length} 个`)
+      console.log(`✓ 侧边栏: ${routeData.sidebar.length} 项`)
+      console.log(`✓ 导航栏: ${routeData.navbar.length} 项\n`)
+
+      // 创建 Vite 服务器
+      const viteServer = await createServer({
+        configFile: false,
+        root: process.cwd(),
+        base: config.site?.base || '/',
+
+        plugins: [
+          vue(),
+          createRouteDataPlugin(routeData),
+          createMarkdownPlugin({
+            sourceDir: config.sourceDir,
+            logger,
+            markdown: config.markdown,
+          }),
+          createConfigHotReloadPlugin({
+            configFile: path.resolve(process.cwd(), options.config),
+            logger,
+          }),
+          createDocNodeDataPlugin(docs),
+        ],
+
+        server: {
+          port: parseInt(options.port),
+          open: options.open,
+          https: options.https ? {} : undefined,
+          host: '0.0.0.0',
+        },
+
+        resolve: {
+          alias: {
+            '@': config.sourceDir,
+            '~': config.outputDir,
+          },
+        },
+
+        optimizeDeps: {
+          include: ['vue', 'vue-router'],
+        },
+
+        ...config.vite,
+      })
+
+      await viteServer.listen()
+
+      const port = parseInt(options.port)
+      console.log('\n✨ SPA 开发服务器已启动！\n')
+      console.log(`  ➜  本地访问: \x1b[36mhttp://localhost:${port}\x1b[0m`)
+      console.log(`  ➜  网络访问: \x1b[36mhttp://0.0.0.0:${port}\x1b[0m\n`)
+      console.log('  ✨ 按 Ctrl+C 停止服务器\n')
+
+      // 监听源文件变化，重新生成路由数据
+      const chokidar = (await import('chokidar')).default
+      const watcher = chokidar.watch(config.sourceDir, {
+        ignored: /(^|[\\/\\])\../,
+        persistent: true,
+      })
+
+      watcher.on('change', async (filepath) => {
+        console.log(`\n📝 文件变化: ${path.basename(filepath)}`)
+        console.log('🔄 重新解析文档...\n')
+
+        try {
+          const newDocs = await parserSystem.parseAll()
+          const newRouteData = await generateRouteData(newDocs)
+          await writeRouteData(newRouteData, cacheDir)
+
+          // 通知 Vite 重新加载
+          viteServer.ws.send({ type: 'full-reload' })
+          console.log('✓ 路由数据已更新')
+        } catch (error) {
+          console.error('❌ 更新失败:', error)
+        }
       })
 
       // 处理退出信号
       process.on('SIGINT', async () => {
         console.log('\n\n👋 正在关闭服务器...')
-        await server.close()
+        await watcher.close()
+        await viteServer.close()
         console.log('✨ 服务器已关闭')
         process.exit(0)
       })

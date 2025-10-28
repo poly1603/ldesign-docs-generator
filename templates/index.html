@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="LDesign 文档站点" />
+  <title>文档站点</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+    #app { min-height: 100vh; }
+    .loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #666; }
+  </style>
+  <script>
+    window.__DOCS_CONFIG__ = window.__DOCS_CONFIG__ || {
+      siteConfig: { title: '文档站点', description: 'LDesign 文档生成器', lang: 'zh-CN', darkMode: true },
+      themeConfig: { name: 'default' },
+      routes: [],
+      isDev: true,
+    }
+  </script>
+</head>
+<body>
+  <div id="app"><div class="loading">加载中...</div></div>
+  <script type="module" src="/src/app/index.ts"></script>
+</body>
+</html>
